@@ -1,0 +1,216 @@
+diff --git a/dwm.1 b/dwm.1
+index 7eb231f..b166dea 100644
+--- dwm.1
++++ dwm.1
+@@ -130,6 +130,14 @@ tag.
+ .B Mod1\-0
+ View all windows with any tag.
+ .TP
++.B Mod1\-Left
++View all windows with tag previous than current.  E.g.
++if tag 4 is selected, previous tag would be 3.
++.TP
++.B Mod1\-Right
++View all windows with tag next than current.  E.g.
++if tag 4 is selected, next tag would be 5.
++.TP
+ .B Mod1\-Control\-[1..n]
+ Add/remove all windows with
+ .BR nth
+diff --git a/dwm.c b/dwm.c
+index 220a12f..e6efe71 100644
+--- dwm.c
++++ dwm.c
+@@ -229,6 +229,9 @@ static void updatestatus(void);
+ static void updatetitle(Client *c);
+ static void updatewmhints(Client *c);
+ static void view(const Arg *arg);
++static void view_next_tag(const Arg *);
++static void view_prev_tag(const Arg *);
++static void view_adjacent_tag(const Arg *, int);
+ static Client *wintoclient(Window w);
+ static Monitor *wintomon(Window w);
+ static int xerror(Display *dpy, XErrorEvent *ee);
+@@ -1934,6 +1937,42 @@ zoom(const Arg *arg) {
+     arrange();
+ }
+ 
++static void
++view_adjacent_tag(const Arg *arg, int distance)
++{
++    int i, curtags;
++    int seltag = 0;
++    Arg a;
++
++    curtags = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
++    for (i = 0; i < LENGTH(tags); i++) {
++        if ((curtags & (1 << i)) != 0) {
++            seltag = i;
++            break;
++        }
++    }
++    
++    seltag = (seltag + distance) % (int)LENGTH(tags);
++    if (seltag < 0)
++        seltag += LENGTH(tags);
++
++    a.i = (1 << seltag);
++    view(&a);
++}
++
++static void
++view_next_tag(const Arg *arg)
++{
++    view_adjacent_tag(arg, +1);
++}
++
++static void
++view_prev_tag(const Arg *arg)
++{
++    view_adjacent_tag(arg, -1);
++}
++
++
+ int
+ main(int argc, char *argv[]) {
+     if(argc == 2 && !strcmp("-v", argv[1]))
+diff --git a/dwm.1 b/dwm.1
+--- dwm.c	2009-07-14 11:07:55.000000000 -0700
++++ dwm.c	2009-07-25 14:12:34.000000000 -0700
+@@ -1433,7 +1433,7 @@
+ 	root = RootWindow(dpy, screen);
+ 	initfont(font);
+ 	sw = DisplayWidth(dpy, screen);
+-	sh = DisplayHeight(dpy, screen);
++	sh = DisplayHeight(dpy, screen) - BOTTOM_BAR_HEIGHT;
+ 	bh = dc.h = dc.font.height + 2;
+ 	updategeom();
+ 	/* init atoms */
+diff --git a/config.def.h b/config.def.h
+--- config.def.h	2009-07-14 11:07:55.000000000 -0700
++++ config.h	2009-07-25 13:24:47.000000000 -0700
+@@ -1,40 +1,51 @@
+ /* See LICENSE file for copyright and license details. */
+ 
+ /* appearance */
+-static const char font[]            = "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*";
+-static const char normbordercolor[] = "#cccccc";
+-static const char normbgcolor[]     = "#cccccc";
+-static const char normfgcolor[]     = "#000000";
+-static const char selbordercolor[]  = "#0066ff";
+-static const char selbgcolor[]      = "#0066ff";
+-static const char selfgcolor[]      = "#ffffff";
++static const char font[]            = "-*-dejavu sans mono-medium-r-normal-*-10-*-*-*-*-*-*-*";
++static const char normbordercolor[] = "#0066ff";
++static const char normbgcolor[]     = "#303030";
++static const char normfgcolor[]     = "#909090";
++static const char selbordercolor[]  = "#f11010";
++static const char selbgcolor[]      = "#909090";
++static const char selfgcolor[]      = "#303030";
+ static const unsigned int borderpx  = 1;        /* border pixel of windows */
+ static const unsigned int snap      = 32;       /* snap pixel */
+ static const Bool showbar           = True;     /* False means no bar */
+ static const Bool topbar            = True;     /* False means bottom bar */
+ 
++#define BOTTOM_BAR_HEIGHT 23 
+ /* tagging */
+-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
++static const char *tags[] = { "term", "net", "mail", "media", "graphics", "vbox", "office", "other" };
+ 
+ static const Rule rules[] = {
+ 	/* class      instance    title       tags mask     isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
++	{ "Gimp",     NULL,       NULL,        1 << 4,            True,        -1 },
++	{ "Inkscape",     NULL,       NULL,        1 << 4,            True,        -1 },
++	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
++	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
++	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
++	{ "Evince",  NULL,       NULL,       1 << 6,       True,       -1 },
++	{ "OpenOffice",  NULL,       NULL,       1 << 6,       True,       -1 },
++	{ "urxvt",  NULL,       "Terminal",       1 << 0,       False,       -1 },
++	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
++	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
++	{ "VirtualBox",  NULL,       NULL,       1 << 5,       True,       -1 },
+ };
+ 
+ /* layout(s) */
+ static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
+-static const Bool resizehints = True; /* False means respect size hints in tiled resizals */
++static const Bool resizehints = False; /* False means respect size hints in tiled resizals */
+ 
+ static const Layout layouts[] = {
+ 	/* symbol     arrange function */
+-	{ "[]=",      tile },    /* first entry is default */
+-	{ "><>",      NULL },    /* no layout function means floating behavior */
+-	{ "[M]",      monocle },
++	{ "*T*",      tile },    /* first entry is default */
++	{ "*F*",      NULL },    /* no layout function means floating behavior */
++	{ "*M*",      monocle },
+ };
+ 
+ /* key definitions */
+-#define MODKEY Mod1Mask
++#define MODKEY Mod4Mask
++#define ALTKEY Mod1Mask
+ #define TAGKEYS(KEY,TAG) \
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+@@ -45,13 +56,42 @@
+ #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+ 
+ /* commands */
+-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+-static const char *termcmd[]  = { "uxterm", NULL };
+-
++static const char *dmenucmd[] = { "dmenu-launch.sh", };
++static const char *termcmd[]  = { "urxvtc", NULL };
++static const char *termshcmd[]  = { "urxvtc", "-e", "screen", "-d", "-R", "-t", "urxvt", "-S", "terminal", NULL };
++static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
++static const char *webcmd[]  = { "firefox", NULL };
++static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
++static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
++static const char *lockcmd[]  = { "lockx", NULL };
++static const char *volume_up[]  = { "amixer", "set", "Master", "2%+", NULL };
++static const char *volume_down[]  = { "amixer", "set", "Master", "2%-", NULL };
++static const char *volume_mute[]  = { "amixer", "set", "Master", "toggle", NULL };
++static const char *mpd_play[]  = { "mpc", "toggle", NULL };
++static const char *mpd_next[]  = { "mpc", "next", NULL };
++static const char *mpd_prev[]  = { "mpc", "prev", NULL };
++static const char *mpd_stop[]  = { "mpc", "stop", NULL };
++static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
++static const char *caltodo[]  = { "firefox", "calendar.google.com", NULL };
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
++	{ ALTKEY,                       XK_Return, spawn,          {.v = dmenucmd } },
++	{ MODKEY,             		XK_z, 	   spawn,          {.v = termcmd } },
++	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termshcmd } },
++	{ MODKEY,             		XK_w, 	   spawn,          {.v = webcmd } },
++	{ MODKEY,             		XK_e, 	   spawn,          {.v = mailcmd } },
++	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
++	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
++	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
++	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
++	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
++	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
++	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
++	{ 0,  		 		 0x1008ff14, 	   spawn,          {.v = mpd_play} },
++	{ 0,  		 		 0x1008ff17, 	   spawn,          {.v = mpd_next} },
++	{ 0,  		 		 0x1008ff16, 	   spawn,          {.v = mpd_prev} },
++	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = mpd_stop} },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+ 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+@@ -71,6 +111,9 @@
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
++	{ MODKEY,                       XK_Right,  view_next_tag,  {0} },
++
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
