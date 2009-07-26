@@ -1,40 +1,51 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]            = "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#cccccc";
-static const char normbgcolor[]     = "#cccccc";
-static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#0066ff";
-static const char selbgcolor[]      = "#0066ff";
-static const char selfgcolor[]      = "#ffffff";
+static const char font[]            = "-*-dejavu sans mono-medium-r-normal-*-10-*-*-*-*-*-*-*";
+static const char normbordercolor[] = "#0066ff";
+static const char normbgcolor[]     = "#303030";
+static const char normfgcolor[]     = "#909090";
+static const char selbordercolor[]  = "#f11010";
+static const char selbgcolor[]      = "#909090";
+static const char selfgcolor[]      = "#303030";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
+#define BOTTOM_BAR_HEIGHT 23 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "term", "net", "mail", "media", "graphics", "vbox", "office", "other" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
+	{ "Gimp",     NULL,       NULL,        1 << 4,            True,        -1 },
+	{ "Inkscape",     NULL,       NULL,        1 << 4,            True,        -1 },
+	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
+	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
+	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Evince",  NULL,       NULL,       1 << 6,       True,       -1 },
+	{ "OpenOffice",  NULL,       NULL,       1 << 6,       True,       -1 },
+	{ "urxvt",  NULL,       "Terminal",       1 << 0,       False,       -1 },
+	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
+	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
+	{ "VirtualBox",  NULL,       NULL,       1 << 5,       True,       -1 },
 };
 
 /* layout(s) */
 static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
-static const Bool resizehints = True; /* False means respect size hints in tiled resizals */
+static const Bool resizehints = False; /* False means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "*T*",      tile },    /* first entry is default */
+	{ "*F*",      NULL },    /* no layout function means floating behavior */
+	{ "*M*",      monocle },
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
+#define ALTKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -45,13 +56,42 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "uxterm", NULL };
-
+static const char *dmenucmd[] = { "dmenu-launch.sh", };
+static const char *termcmd[]  = { "urxvtc", NULL };
+static const char *termshcmd[]  = { "urxvtc", "-e", "screen", "-d", "-R", "-t", "urxvt", "-S", "terminal", NULL };
+static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
+static const char *webcmd[]  = { "firefox", NULL };
+static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
+static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
+static const char *lockcmd[]  = { "lockx", NULL };
+static const char *volume_up[]  = { "amixer", "set", "Master", "2%+", NULL };
+static const char *volume_down[]  = { "amixer", "set", "Master", "2%-", NULL };
+static const char *volume_mute[]  = { "amixer", "set", "Master", "toggle", NULL };
+static const char *mpd_play[]  = { "mpc", "toggle", NULL };
+static const char *mpd_next[]  = { "mpc", "next", NULL };
+static const char *mpd_prev[]  = { "mpc", "prev", NULL };
+static const char *mpd_stop[]  = { "mpc", "stop", NULL };
+static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
+static const char *caltodo[]  = { "firefox", "calendar.google.com", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
+	{ ALTKEY,                       XK_Return, spawn,          {.v = dmenucmd } },
+	{ MODKEY,             		XK_z, 	   spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termshcmd } },
+	{ MODKEY,             		XK_w, 	   spawn,          {.v = webcmd } },
+	{ MODKEY,             		XK_e, 	   spawn,          {.v = mailcmd } },
+	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
+	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
+	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
+	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
+	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
+	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
+	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
+	{ 0,  		 		 0x1008ff14, 	   spawn,          {.v = mpd_play} },
+	{ 0,  		 		 0x1008ff17, 	   spawn,          {.v = mpd_next} },
+	{ 0,  		 		 0x1008ff16, 	   spawn,          {.v = mpd_prev} },
+	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = mpd_stop} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -71,6 +111,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
+	{ MODKEY,                       XK_Right,  view_next_tag,  {0} },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
