@@ -1,0 +1,1 @@
+/home/firecat53/src/dwm/config.h
