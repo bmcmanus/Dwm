@@ -15,7 +15,7 @@ static const Bool topbar            = True;     /* False means bottom bar */
 
 #define BOTTOM_BAR_HEIGHT 23 
 /* tagging */
-static const char *tags[] = { "term", "net", "mail", "media", "graphics", "vbox", "office", "other" };
+static const char *tags[] = { "term", "net", "comms", "media", "graphics", "vbox", "office", "other" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
@@ -24,16 +24,18 @@ static const Rule rules[] = {
 	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
-	{ "Evince",  NULL,       NULL,       1 << 6,       True,       -1 },
+	{ "Evince",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       True,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
+	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
 	{ "VirtualBox",  NULL,       NULL,       1 << 5,       True,       -1 },
+	{ "Lotus Notes",  NULL,       NULL,       1 << 2,       True,       -1 },
 };
 
 /* layout(s) */
-static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const Bool resizehints = False; /* False means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
@@ -59,6 +61,7 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu-launch.sh", };
 static const char *termcmd[]  = { "urxvtc", NULL };
 static const char *termshcmd[]  = { "urxvtc", "-e", "screen", "-d", "-R", "-t", "urxvt", "-S", "terminal", NULL };
+static const char *irssi[]  = { "urxvtc", "-title", "irssi", "-e", "screen", "-d", "-R", "-t", "irssi", "-S", "irssi", "irssi", NULL };
 static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
 static const char *webcmd[]  = { "firefox", NULL };
 static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
@@ -72,6 +75,7 @@ static const char *mpd_next[]  = { "mpc", "next", NULL };
 static const char *mpd_prev[]  = { "mpc", "prev", NULL };
 static const char *mpd_stop[]  = { "mpc", "stop", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
+static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
 static const char *caltodo[]  = { "firefox", "calendar.google.com", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -80,7 +84,9 @@ static Key keys[] = {
 	{ MODKEY,             		XK_z, 	   spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termshcmd } },
 	{ MODKEY,             		XK_w, 	   spawn,          {.v = webcmd } },
+	{ MODKEY,             		XK_r, 	   spawn,          {.v = irssi } },
 	{ MODKEY,             		XK_e, 	   spawn,          {.v = mailcmd } },
+	{ MODKEY,             		XK_a, 	   spawn,          {.v = notes } },
 	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
 	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
 	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
