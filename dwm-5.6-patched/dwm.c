@@ -353,9 +353,9 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, Bool interact) {
 		/* adjust for aspect limits */
 		if(c->mina > 0 && c->maxa > 0) {
 			if(c->maxa < (float)*w / *h)
-				*w = *h * c->maxa;
+				*w = *h * c->maxa + 0.5;
 			else if(c->mina < (float)*h / *w)
-				*h = *w * c->mina;
+				*h = *w * c->mina + 0.5;
 		}
 		if(baseismin) { /* increment calculation requires this */
 			*w -= c->basew;
@@ -1686,7 +1686,7 @@ updatebarpos(Monitor *m) {
 
 void
 updategeom(void) {
-	int i, n = 1;
+	int i, n = 1, nn;
 	Client *c;
 	Monitor *newmons = NULL, *m = NULL, *tm;
 
@@ -1695,6 +1695,11 @@ updategeom(void) {
 
 	if(XineramaIsActive(dpy))
 		info = XineramaQueryScreens(dpy, &n);
+	for(i = 1, nn = n; i < n; i++)
+		if(info[i - 1].x_org == info[i].x_org && info[i - 1].y_org == info[i].y_org
+		&& info[i - 1].width == info[i].width && info[i - 1].height == info[i].height)
+			--nn;
+	n = nn; /* we only consider unique geometries as separate screens */
 #endif /* XINERAMA */
 	/* allocate monitor(s) for the new geometry setup */
 	for(i = 0; i < n; i++) {
@@ -1810,8 +1815,8 @@ updatesizehints(Client *c) {
 	else
 		c->minw = c->minh = 0;
 	if(size.flags & PAspect) {
-		c->mina = (float)size.min_aspect.y / (float)size.min_aspect.x;
-		c->maxa = (float)size.max_aspect.x / (float)size.max_aspect.y;
+		c->mina = (float)size.min_aspect.y / size.min_aspect.x;
+		c->maxa = (float)size.max_aspect.x / size.max_aspect.y;
 	}
 	else
 		c->maxa = c->mina = 0.0;
