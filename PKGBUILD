@@ -14,18 +14,13 @@ options=(zipman)
 depends=('libx11')
 install=dwm.install
 #source=(http://code.suckless.org/dl/dwm/dwm-$pkgver.tar.gz \
-source=(dwm-5.6.tar.gz \
-	#config.h \
-	#arrow-switch-$pkgver.diff
-	#bottom_bar-$pkgver.diff)
+source=(dwm-$pkgver.tar.gz \
 	dwm-$pkgver.diff)
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  #patch -p1 < ../bottom_bar-$pkgver.diff
-  #patch -p1 < ../arrow-switch-$pkgver.diff
-  patch -p0 < ../dwm-$pkgver.diff
-  #cp $srcdir/config.h config.h
+  patch -p1 < ../dwm-$pkgver.diff
+  cp config.def.h config.h
 
   make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11 || return 1
   make PREFIX=/usr DESTDIR=$pkgdir install || return 1

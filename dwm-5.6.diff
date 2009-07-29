@@ -1,94 +1,6 @@
-diff --git a/dwm.1 b/dwm.1
-index 7eb231f..b166dea 100644
---- dwm.1
-+++ dwm.1
-@@ -130,6 +130,14 @@ tag.
- .B Mod1\-0
- View all windows with any tag.
- .TP
-+.B Mod1\-Left
-+View all windows with tag previous than current.  E.g.
-+if tag 4 is selected, previous tag would be 3.
-+.TP
-+.B Mod1\-Right
-+View all windows with tag next than current.  E.g.
-+if tag 4 is selected, next tag would be 5.
-+.TP
- .B Mod1\-Control\-[1..n]
- Add/remove all windows with
- .BR nth
-diff --git a/dwm.c b/dwm.c
-index 220a12f..e6efe71 100644
---- dwm.c
-+++ dwm.c
-@@ -229,6 +229,9 @@ static void updatestatus(void);
- static void updatetitle(Client *c);
- static void updatewmhints(Client *c);
- static void view(const Arg *arg);
-+static void view_next_tag(const Arg *);
-+static void view_prev_tag(const Arg *);
-+static void view_adjacent_tag(const Arg *, int);
- static Client *wintoclient(Window w);
- static Monitor *wintomon(Window w);
- static int xerror(Display *dpy, XErrorEvent *ee);
-@@ -1934,6 +1937,42 @@ zoom(const Arg *arg) {
-     arrange();
- }
- 
-+static void
-+view_adjacent_tag(const Arg *arg, int distance)
-+{
-+    int i, curtags;
-+    int seltag = 0;
-+    Arg a;
-+
-+    curtags = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
-+    for (i = 0; i < LENGTH(tags); i++) {
-+        if ((curtags & (1 << i)) != 0) {
-+            seltag = i;
-+            break;
-+        }
-+    }
-+    
-+    seltag = (seltag + distance) % (int)LENGTH(tags);
-+    if (seltag < 0)
-+        seltag += LENGTH(tags);
-+
-+    a.i = (1 << seltag);
-+    view(&a);
-+}
-+
-+static void
-+view_next_tag(const Arg *arg)
-+{
-+    view_adjacent_tag(arg, +1);
-+}
-+
-+static void
-+view_prev_tag(const Arg *arg)
-+{
-+    view_adjacent_tag(arg, -1);
-+}
-+
-+
- int
- main(int argc, char *argv[]) {
-     if(argc == 2 && !strcmp("-v", argv[1]))
-diff --git a/dwm.1 b/dwm.1
---- dwm.c	2009-07-14 11:07:55.000000000 -0700
-+++ dwm.c	2009-07-25 14:12:34.000000000 -0700
-@@ -1433,7 +1433,7 @@
- 	root = RootWindow(dpy, screen);
- 	initfont(font);
- 	sw = DisplayWidth(dpy, screen);
--	sh = DisplayHeight(dpy, screen);
-+	sh = DisplayHeight(dpy, screen) - BOTTOM_BAR_HEIGHT;
- 	bh = dc.h = dc.font.height + 2;
- 	updategeom();
- 	/* init atoms */
-diff --git a/config.def.h b/config.def.h
---- config.def.h	2009-07-14 11:07:55.000000000 -0700
-+++ config.h	2009-07-25 13:24:47.000000000 -0700
+diff -rupN dwm-5.6-source/config.def.h dwm-5.6-patched/config.def.h
+--- dwm-5.6-source/config.def.h	2009-07-25 21:59:19.000000000 -0700
++++ dwm-5.6-patched/config.def.h	2009-07-28 22:29:08.000000000 -0700
 @@ -1,40 +1,51 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -156,7 +68,7 @@ diff --git a/config.def.h b/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -45,13 +56,42 @@
+@@ -45,13 +56,42 @@ static const Layout layouts[] = {
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
@@ -204,7 +116,7 @@ diff --git a/config.def.h b/config.def.h
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -71,6 +111,9 @@
+@@ -71,6 +111,9 @@ static Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -214,3 +126,86 @@ diff --git a/config.def.h b/config.def.h
  	TAGKEYS(                        XK_1,                      0)
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
+diff -rupN dwm-5.6-source/dwm.1 dwm-5.6-patched/dwm.1
+--- dwm-5.6-source/dwm.1	2009-07-25 21:59:19.000000000 -0700
++++ dwm-5.6-patched/dwm.1	2009-07-28 22:29:08.000000000 -0700
+@@ -130,6 +130,14 @@ tag.
+ .B Mod1\-0
+ View all windows with any tag.
+ .TP
++.B Mod1\-Left
++View all windows with tag previous than current.  E.g.
++if tag 4 is selected, previous tag would be 3.
++.TP
++.B Mod1\-Right
++View all windows with tag next than current.  E.g.
++if tag 4 is selected, next tag would be 5.
++.TP
+ .B Mod1\-Control\-[1..n]
+ Add/remove all windows with
+ .BR nth
+diff -rupN dwm-5.6-source/dwm.c dwm-5.6-patched/dwm.c
+--- dwm-5.6-source/dwm.c	2009-07-25 21:59:19.000000000 -0700
++++ dwm-5.6-patched/dwm.c	2009-07-28 22:29:08.000000000 -0700
+@@ -229,6 +229,9 @@ static void updatestatus(void);
+ static void updatetitle(Client *c);
+ static void updatewmhints(Client *c);
+ static void view(const Arg *arg);
++static void view_next_tag(const Arg *);
++static void view_prev_tag(const Arg *);
++static void view_adjacent_tag(const Arg *, int);
+ static Client *wintoclient(Window w);
+ static Monitor *wintomon(Window w);
+ static int xerror(Display *dpy, XErrorEvent *ee);
+@@ -1433,7 +1436,7 @@ setup(void) {
+ 	root = RootWindow(dpy, screen);
+ 	initfont(font);
+ 	sw = DisplayWidth(dpy, screen);
+-	sh = DisplayHeight(dpy, screen);
++	sh = DisplayHeight(dpy, screen) - BOTTOM_BAR_HEIGHT;
+ 	bh = dc.h = dc.font.height + 2;
+ 	updategeom();
+ 	/* init atoms */
+@@ -1934,6 +1937,42 @@ zoom(const Arg *arg) {
+ 	arrange();
+ }
+ 
++static void
++view_adjacent_tag(const Arg *arg, int distance)
++{
++    int i, curtags;
++    int seltag = 0;
++    Arg a;
++
++    curtags = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
++    for (i = 0; i < LENGTH(tags); i++) {
++        if ((curtags & (1 << i)) != 0) {
++            seltag = i;
++            break;
++        }
++    }
++    
++    seltag = (seltag + distance) % (int)LENGTH(tags);
++    if (seltag < 0)
++        seltag += LENGTH(tags);
++
++    a.i = (1 << seltag);
++    view(&a);
++}
++
++static void
++view_next_tag(const Arg *arg)
++{
++    view_adjacent_tag(arg, +1);
++}
++
++static void
++view_prev_tag(const Arg *arg)
++{
++    view_adjacent_tag(arg, -1);
++}
++
++
+ int
+ main(int argc, char *argv[]) {
+ 	if(argc == 2 && !strcmp("-v", argv[1]))
