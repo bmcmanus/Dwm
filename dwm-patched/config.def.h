@@ -23,7 +23,7 @@ static const Rule rules[] = {
 	{ "Inkscape",     NULL,       NULL,        1 << 4,            True,        -1 },
 	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
-	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Shiretoko",  NULL,       NULL,       1 << 1,       True,       -1 },
 	{ "Evince",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       True,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
