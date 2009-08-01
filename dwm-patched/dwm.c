@@ -1716,7 +1716,7 @@ updategeom(void) {
 			m->mx = m->wx = info[i].x_org;
 			m->my = m->wy = info[i].y_org;
 			m->mw = m->ww = info[i].width;
-			m->mh = m->wh = info[i].height;
+			m->mh = m->wh = info[i].height - BOTTOM_BAR_HEIGHT;
 		}
 		XFree(info);
 	}
