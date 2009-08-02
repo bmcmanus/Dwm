@@ -15,7 +15,7 @@ static const Bool topbar            = True;     /* False means bottom bar */
 
 #define BOTTOM_BAR_HEIGHT 23 
 /* tagging */
-static const char *tags[] = { "term", "net", "comms", "media", "graphics", "vbox", "office", "other" };
+static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
@@ -64,6 +64,7 @@ static const char *termshcmd[]  = { "urxvtc", "-e", "screen", "-d", "-R", "-t", 
 static const char *irssi[]  = { "urxvtc", "-title", "irssi", "-e", "screen", "-d", "-R", "-t", "irssi", "-S", "irssi", "irssi", NULL };
 static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
 static const char *webcmd[]  = { "firefox", NULL };
+static const char *filemgr[]  = { "pcmanfm", NULL };
 static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
 static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
 static const char *lockcmd[]  = { "lockx", NULL };
@@ -82,6 +83,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
 	{ ALTKEY,                       XK_Return, spawn,          {.v = dmenucmd } },
 	{ MODKEY,             		XK_z, 	   spawn,          {.v = termcmd } },
+	{ MODKEY,             		XK_x, 	   spawn,          {.v = filemgr } },
 	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termshcmd } },
 	{ MODKEY,             		XK_w, 	   spawn,          {.v = webcmd } },
 	{ MODKEY,             		XK_r, 	   spawn,          {.v = irssi } },
