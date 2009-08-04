@@ -13,7 +13,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
-#define BOTTOM_BAR_HEIGHT 23 
+#define BOTTOM_BAR_HEIGHT 23
 /* tagging */
 static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 
@@ -43,6 +43,7 @@ static const Layout layouts[] = {
 	{ "*T*",      tile },    /* first entry is default */
 	{ "*F*",      NULL },    /* no layout function means floating behavior */
 	{ "*M*",      monocle },
+	{ "*B*",      bstack },
 };
 
 /* key definitions */
@@ -100,7 +101,7 @@ static Key keys[] = {
 	{ 0,  		 		 0x1008ff17, 	   spawn,          {.v = mpd_next} },
 	{ 0,  		 		 0x1008ff16, 	   spawn,          {.v = mpd_prev} },
 	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = mpd_stop} },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_s,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
@@ -111,6 +112,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_b,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
