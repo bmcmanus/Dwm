@@ -13,7 +13,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
-#define BOTTOM_BAR_HEIGHT 23
+#define BOTTOM_BAR_HEIGHT 0
 /* tagging */
 static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 

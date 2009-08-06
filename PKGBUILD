@@ -16,7 +16,7 @@ install=dwm.install
 #source=(http://code.suckless.org/dl/dwm/dwm-$pkgver.tar.gz \
 source=(dwm-$pkgver.tar.gz \
 	dwm-$pkgver.diff)
-
+. md5sums
 build() {
   cd $srcdir/$pkgname-$pkgver
   patch -p1 < ../dwm-$pkgver.diff
