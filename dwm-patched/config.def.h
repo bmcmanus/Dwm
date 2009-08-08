@@ -11,7 +11,7 @@ static const char selfgcolor[]      = "#303030";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
-static const Bool topbar            = True;     /* False means bottom bar */
+static const Bool topbar            = False;     /* False means bottom bar */
 
 #define BOTTOM_BAR_HEIGHT 0
 /* tagging */

@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-07-30 08:59:20.000000000 -0700
-+++ dwm-patched/config.def.h	2009-08-05 13:31:01.000000000 -0700
++++ dwm-patched/config.def.h	2009-08-07 21:15:07.000000000 -0700
 @@ -1,40 +1,54 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -22,7 +22,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
  static const unsigned int snap      = 32;       /* snap pixel */
  static const Bool showbar           = True;     /* False means no bar */
- static const Bool topbar            = True;     /* False means bottom bar */
+-static const Bool topbar            = True;     /* False means bottom bar */
++static const Bool topbar            = False;     /* False means bottom bar */
  
 +#define BOTTOM_BAR_HEIGHT 0
  /* tagging */
