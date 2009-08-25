@@ -20,18 +20,18 @@ static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,        1 << 4,            True,        -1 },
-	{ "Inkscape",     NULL,       NULL,        1 << 4,            True,        -1 },
+	{ "Inkscape",     NULL,       NULL,        1 << 4,            False,        -1 },
 	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
-	{ "Shiretoko",  NULL,       NULL,       1 << 1,       True,       -1 },
+	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "Evince",  NULL,       NULL,       1 << 6,       False,       -1 },
-	{ "OpenOffice",  NULL,       NULL,       1 << 6,       True,       -1 },
+	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
 	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
-	{ "VirtualBox",  NULL,       NULL,       1 << 5,       True,       -1 },
 	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
+	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
 };
 
 /* layout(s) */
