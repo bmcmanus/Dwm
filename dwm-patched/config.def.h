@@ -30,7 +30,7 @@ static const Rule rules[] = {
 	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
 	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
-	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       False,       -1 },
+	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
 	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
 };
 

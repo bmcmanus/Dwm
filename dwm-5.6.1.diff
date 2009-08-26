@@ -1,10 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
---- dwm-source/config.def.h	2009-07-30 08:59:20.000000000 -0700
-<<<<<<< HEAD
-+++ dwm-patched/config.def.h	2009-08-13 09:26:42.000000000 -0700
-=======
-+++ dwm-patched/config.def.h	2009-08-24 17:31:03.000000000 -0700
->>>>>>> test
+--- dwm-source/config.def.h	2009-08-24 20:05:13.000000000 -0700
++++ dwm-patched/config.def.h	2009-08-25 19:58:44.000000000 -0700
 @@ -1,40 +1,54 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -48,13 +44,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
 +	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
 +	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
-<<<<<<< HEAD
-+	{ "VirtualBox",  NULL,       NULL,       1 << 5,       True,       -1 },
 +	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
-=======
 +	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
-+	{ "Lotus Notes",  NULL,       NULL,       1 << 2,       True,       -1 },
->>>>>>> test
  };
  
  /* layout(s) */
@@ -162,8 +153,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
 diff -urpN dwm-source/config.mk dwm-patched/config.mk
---- dwm-source/config.mk	2009-07-30 08:59:20.000000000 -0700
-+++ dwm-patched/config.mk	2009-08-01 13:40:58.000000000 -0700
+--- dwm-source/config.mk	2009-08-24 20:05:13.000000000 -0700
++++ dwm-patched/config.mk	2009-08-24 20:05:13.000000000 -0700
 @@ -15,8 +15,8 @@ XINERAMALIBS = -L${X11LIB} -lXinerama
  XINERAMAFLAGS = -DXINERAMA
  
@@ -176,8 +167,8 @@ diff -urpN dwm-source/config.mk dwm-patched/config.mk
  # flags
  CPPFLAGS = -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
 diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
---- dwm-source/dwm.1	2009-07-30 08:59:20.000000000 -0700
-+++ dwm-patched/dwm.1	2009-07-30 08:59:20.000000000 -0700
+--- dwm-source/dwm.1	2009-08-24 20:05:13.000000000 -0700
++++ dwm-patched/dwm.1	2009-08-24 20:05:13.000000000 -0700
 @@ -126,6 +126,14 @@ View all windows with nth tag.
  .B Mod1\-0
  View all windows with any tag.
@@ -194,8 +185,8 @@ diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
  Add/remove all windows with nth tag to/from the view.
  .TP
 diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
---- dwm-source/dwm.c	2009-07-30 08:59:20.000000000 -0700
-+++ dwm-patched/dwm.c	2009-08-08 18:32:44.000000000 -0700
+--- dwm-source/dwm.c	2009-08-24 20:05:13.000000000 -0700
++++ dwm-patched/dwm.c	2009-08-24 20:05:13.000000000 -0700
 @@ -36,6 +36,10 @@
  #include <X11/Xlib.h>
  #include <X11/Xproto.h>
