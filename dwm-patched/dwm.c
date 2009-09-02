@@ -288,6 +288,7 @@ static Window root;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
+#include "colorstatus.c"
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
@@ -668,6 +669,7 @@ drawbar(Monitor *m) {
 	unsigned int i, n = 0, occ = 0, urg = 0;
 	unsigned long *col;
 	Client *c;
+	int stextw = 0;
 
 	for(c = m->clients; c; c = c->next) {
 		if(ISVISIBLE(c))
@@ -695,13 +697,8 @@ drawbar(Monitor *m) {
 	drawtext(ntext, dc.norm, False);
 	x = (dc.x += dc.w);
 	if(m == selmon) { /* status is only drawn on selected monitor */
-		dc.w = TEXTW(stext);
-		dc.x = m->ww - dc.w;
-		if(dc.x < x) {
-			dc.x = x;
-			dc.w = m->ww - x;
-		}
-		drawtext(stext, dc.norm, False);
+		stextw = drawstatustext(x, m->ww);
+		dc.x = m->ww - stextw;
 	}
 	else
 		dc.x = m->ww;

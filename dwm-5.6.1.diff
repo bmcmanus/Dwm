@@ -1,3 +1,152 @@
+diff -urpN dwm-source/colorstatus.c dwm-patched/colorstatus.c
+--- dwm-source/colorstatus.c	1969-12-31 16:00:00.000000000 -0800
++++ dwm-patched/colorstatus.c	2009-09-01 18:55:52.000000000 -0700
+@@ -0,0 +1,145 @@
++int
++drawstatustext(int x, int ww) {
++    char cd[] = "[c]", id[] = "[i]";
++    char buf1[256] = {0};
++    Bool parse = True;
++    Bool cs = False, is = False;
++    int stextw = 0;
++    
++    strcpy(buf1, stext);
++    while(parse) {
++        char *cp = 0, *ip = 0;
++        
++        cp = strstr(buf1, cd);
++        ip = strstr(buf1, id);
++        if(cp != NULL || ip != NULL) {
++            char buf2[256] = {0}, buf3[256] = {0};
++            size_t clen2 = -1, ilen2 = -1, len2 = 0, dlen = 0, offset3 = 0, len3 = 0;
++            
++            if(cp != NULL)
++                clen2 = cp - buf1;
++            if(ip != NULL)
++                ilen2 = ip - buf1;
++            if(clen2 < 0) {
++                len2 = ilen2;
++                dlen = strlen(id);
++            }
++            else if(ilen2 < 0) {
++                len2 = clen2;
++                dlen = strlen(cd);
++            }
++            else if(clen2 < ilen2) {
++                len2 = clen2;
++                dlen = strlen(cd);
++            }
++            else {
++                len2 = ilen2;
++                dlen = strlen(id);
++            }
++            strncpy(buf2, buf1, len2);
++            offset3 = len2 + dlen;
++            len3 = strlen(buf1) - offset3;
++            strncpy(buf3, buf1 + offset3, len3);
++            if(buf2 != NULL && strlen(buf2) > 0)
++                stextw = stextw + TEXTW(buf2);
++            
++            memset(buf1, '\0', sizeof(buf1));
++            strcpy(buf1, buf3);
++        }
++        else {
++            stextw = stextw + TEXTW(buf1);
++            parse = False;
++        }
++    }
++    dc.x = ww - stextw;
++    
++    memset(buf1, '\0', sizeof(buf1));
++    strcpy(buf1, stext);
++    parse = True;
++    while(parse) {
++        char *cp = 0, *ip = 0;
++        
++        cp = strstr(buf1, cd);
++        ip = strstr(buf1, id);
++        if(cp != NULL || ip != NULL) {
++            char buf2[256] = {0}, buf3[256] = {0};
++            size_t clen2 = -1, ilen2 = -1, len2 = 0, dlen = 0, offset3 = 0, len3 = 0;
++            Bool cs3 = cs, is3 = is;
++            
++            if(cp != NULL)
++                clen2 = cp - buf1;
++            if(ip != NULL)
++                ilen2 = ip - buf1;
++            if(clen2 < 0) {
++                len2 = ilen2;
++                dlen = strlen(id);
++                is3 = !is;
++            }
++            else if(ilen2 < 0) {
++                len2 = clen2;
++                dlen = strlen(cd);
++                cs3 = !cs;
++            }
++            else if(clen2 < ilen2) {
++                len2 = clen2;
++                dlen = strlen(cd);
++                cs3 = !cs;
++            }
++            else {
++                len2 = ilen2;
++                dlen = strlen(id);
++                is3 = !is;
++            }
++            
++            strncpy(buf2, buf1, len2);
++            offset3 = len2 + dlen;
++            len3 = strlen(buf1) - offset3;
++            strncpy(buf3, buf1 + offset3, len3);
++            if(buf2 != NULL && strlen(buf2) > 0) {
++                dc.w = TEXTW(buf2);
++                if(cs) {
++                    if(is)
++                        drawtext(buf2, dc.sel, True);
++                    else
++                        drawtext(buf2, dc.sel, False);
++                }
++                else {
++                    if(is)
++                        drawtext(buf2, dc.norm, True);
++                    else
++                        drawtext(buf2, dc.norm, False);
++                }
++                dc.x = dc.x + dc.w;
++            }
++            
++            cs = cs3;
++            is = is3;
++            memset(buf1, '\0', sizeof(buf1));
++            strcpy(buf1, buf3);
++        }
++        else {
++            dc.w = TEXTW(buf1);
++            dc.x = ww - dc.w;
++            if(dc.x < x) {
++                dc.x = x;
++                dc.w = ww - x;
++            }
++            if(cs) {
++                if(is)
++                    drawtext(buf1, dc.sel, True);
++                else
++                    drawtext(buf1, dc.sel, False);
++            }
++            else {
++                if(is)
++                    drawtext(buf1, dc.norm, True);
++                else
++                    drawtext(buf1, dc.norm, False);
++            }
++            parse = False;
++        }
++    }
++    
++    return(stextw);
++}
++
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-08-24 20:05:13.000000000 -0700
 +++ dwm-patched/config.def.h	2009-09-01 06:51:56.000000000 -0700
@@ -185,7 +334,7 @@ diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
  .TP
 diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
 --- dwm-source/dwm.c	2009-08-24 20:05:13.000000000 -0700
-+++ dwm-patched/dwm.c	2009-08-24 20:05:13.000000000 -0700
++++ dwm-patched/dwm.c	2009-09-01 18:54:21.000000000 -0700
 @@ -36,6 +36,10 @@
  #include <X11/Xlib.h>
  #include <X11/Xproto.h>
@@ -259,7 +408,15 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  static Client *wintoclient(Window w);
  static Monitor *wintomon(Window w);
  static int xerror(Display *dpy, XErrorEvent *ee);
-@@ -467,10 +486,6 @@ cleanup(void) {
+@@ -269,6 +288,7 @@ static Window root;
+ 
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
++#include "colorstatus.c"
+ 
+ /* compile-time check if all tags fit into an unsigned int bit array. */
+ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
+@@ -467,10 +487,6 @@ cleanup(void) {
  	for(m = mons; m; m = m->next)
  		while(m->stack)
  			unmanage(m->stack);
@@ -270,7 +427,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	XFreePixmap(dpy, dc.drawable);
  	XFreeGC(dpy, dc.gc);
-@@ -539,6 +554,7 @@ configurenotify(XEvent *e) {
+@@ -539,6 +555,7 @@ configurenotify(XEvent *e) {
  		dc.drawable = XCreatePixmap(dpy, root, sw, bh, DefaultDepth(dpy, screen));
  		updatebars();
  		for(m = mons; m; m = m->next)
@@ -278,7 +435,31 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  			XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
  		arrange();
  	}
-@@ -744,7 +760,7 @@ drawtext(const char *text, unsigned long
+@@ -652,6 +669,7 @@ drawbar(Monitor *m) {
+ 	unsigned int i, n = 0, occ = 0, urg = 0;
+ 	unsigned long *col;
+ 	Client *c;
++	int stextw = 0;
+ 
+ 	for(c = m->clients; c; c = c->next) {
+ 		if(ISVISIBLE(c))
+@@ -679,13 +697,8 @@ drawbar(Monitor *m) {
+ 	drawtext(ntext, dc.norm, False);
+ 	x = (dc.x += dc.w);
+ 	if(m == selmon) { /* status is only drawn on selected monitor */
+-		dc.w = TEXTW(stext);
+-		dc.x = m->ww - dc.w;
+-		if(dc.x < x) {
+-			dc.x = x;
+-			dc.w = m->ww - x;
+-		}
+-		drawtext(stext, dc.norm, False);
++		stextw = drawstatustext(x, m->ww);
++		dc.x = m->ww - stextw;
+ 	}
+ 	else
+ 		dc.x = m->ww;
+@@ -744,7 +757,7 @@ drawtext(const char *text, unsigned long
  		return;
  	olen = strlen(text);
  	h = dc.font.ascent + dc.font.descent;
@@ -287,7 +468,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  	x = dc.x + (h / 2);
  	/* shorten text if necessary */
  	for(len = MIN(olen, sizeof buf); len && textnw(text, len) > dc.w - h; len--);
-@@ -753,11 +769,8 @@ drawtext(const char *text, unsigned long
+@@ -753,11 +766,8 @@ drawtext(const char *text, unsigned long
  	memcpy(buf, text, len);
  	if(len < olen)
  		for(i = len; i && i > len - 3; buf[--i] = '.');
@@ -301,7 +482,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  }
  
  void
-@@ -857,13 +870,13 @@ focusstack(const Arg *arg) {
+@@ -857,13 +867,13 @@ focusstack(const Arg *arg) {
  }
  
  unsigned long
@@ -319,7 +500,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  }
  
  Bool
-@@ -960,37 +973,20 @@ grabkeys(void) {
+@@ -960,37 +970,20 @@ grabkeys(void) {
  
  void
  initfont(const char *fontstr) {
@@ -370,7 +551,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  	dc.font.height = dc.font.ascent + dc.font.descent;
  }
  
-@@ -1433,7 +1429,7 @@ setup(void) {
+@@ -1433,7 +1426,7 @@ setup(void) {
  	root = RootWindow(dpy, screen);
  	initfont(font);
  	sw = DisplayWidth(dpy, screen);
@@ -379,7 +560,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  	bh = dc.h = dc.font.height + 2;
  	updategeom();
  	/* init atoms */
-@@ -1447,17 +1443,20 @@ setup(void) {
+@@ -1447,17 +1440,20 @@ setup(void) {
  	cursor[CurResize] = XCreateFontCursor(dpy, XC_sizing);
  	cursor[CurMove] = XCreateFontCursor(dpy, XC_fleur);
  	/* init appearance */
@@ -408,7 +589,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  	/* init bars */
  	for(blw = i = 0; LENGTH(layouts) > 1 && i < LENGTH(layouts); i++) {
  		w = TEXTW(layouts[i].symbol);
-@@ -1531,13 +1530,10 @@ tagmon(const Arg *arg) {
+@@ -1531,13 +1527,10 @@ tagmon(const Arg *arg) {
  
  int
  textnw(const char *text, unsigned int len) {
@@ -426,7 +607,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  }
  
  void
-@@ -1713,7 +1709,7 @@ updategeom(void) {
+@@ -1713,7 +1706,7 @@ updategeom(void) {
  			m->mx = m->wx = info[i].x_org;
  			m->my = m->wy = info[i].y_org;
  			m->mw = m->ww = info[i].width;
@@ -435,7 +616,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  		}
  		XFree(info);
  	}
-@@ -1939,6 +1935,42 @@ zoom(const Arg *arg) {
+@@ -1939,6 +1932,42 @@ zoom(const Arg *arg) {
  	arrange();
  }
  
@@ -478,7 +659,7 @@ diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
  int
  main(int argc, char *argv[]) {
  	if(argc == 2 && !strcmp("-v", argv[1]))
-@@ -1957,3 +1989,34 @@ main(int argc, char *argv[]) {
+@@ -1957,3 +1986,34 @@ main(int argc, char *argv[]) {
  	XCloseDisplay(dpy);
  	return 0;
  }
