@@ -78,6 +78,8 @@ static const char *mpd_stop[]  = { "mpc", "stop", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
 static const char *caltodo[]  = { "firefox", "calendar.google.com", NULL };
+static const char *snipload[]  = { "snip", "load", NULL };
+static const char *snipsave[]  = { "snip", "save", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
@@ -92,6 +94,8 @@ static Key keys[] = {
 	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
 	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
 	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
+	{ MODKEY,             		XK_q, 	   spawn,          {.v = snipload } },
+	{ MODKEY|ALTKEY,    		XK_q, 	   spawn,          {.v = snipsave } },
 	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
 	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },

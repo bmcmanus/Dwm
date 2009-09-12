@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-08-24 20:05:13.000000000 -0700
-+++ dwm-patched/config.def.h	2009-09-01 06:51:56.000000000 -0700
++++ dwm-patched/config.def.h	2009-09-12 16:17:58.000000000 -0700
 @@ -1,40 +1,53 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -71,7 +71,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -45,14 +58,49 @@ static const Layout layouts[] = {
+@@ -45,14 +58,53 @@ static const Layout layouts[] = {
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
@@ -98,6 +98,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 +static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
 +static const char *caltodo[]  = { "firefox", "calendar.google.com", NULL };
++static const char *snipload[]  = { "snip", "load", NULL };
++static const char *snipsave[]  = { "snip", "save", NULL };
  static Key keys[] = {
  	/* modifier                     key        function        argument */
 -	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -115,6 +117,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
 +	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
 +	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
++	{ MODKEY,             		XK_q, 	   spawn,          {.v = snipload } },
++	{ MODKEY|ALTKEY,    		XK_q, 	   spawn,          {.v = snipsave } },
 +	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
 +	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 +	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
@@ -127,7 +131,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-@@ -60,9 +108,10 @@ static Key keys[] = {
+@@ -60,9 +112,10 @@ static Key keys[] = {
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -141,7 +145,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -71,6 +120,9 @@ static Key keys[] = {
+@@ -71,6 +124,9 @@ static Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -185,7 +189,7 @@ diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
  .TP
 diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
 --- dwm-source/dwm.c	2009-08-24 20:05:13.000000000 -0700
-+++ dwm-patched/dwm.c	2009-09-02 20:52:36.000000000 -0700
++++ dwm-patched/dwm.c	2009-09-02 20:54:56.000000000 -0700
 @@ -36,6 +36,10 @@
  #include <X11/Xlib.h>
  #include <X11/Xproto.h>
