@@ -97,6 +97,7 @@ static Key keys[] = {
 	{ MODKEY,             		XK_q, 	   spawn,          {.v = snipload } },
 	{ MODKEY|ALTKEY,    		XK_q, 	   spawn,          {.v = snipsave } },
 	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
+	{ ALTKEY|ControlMask,  		XK_l, 	   spawn,          {.v = lockcmd } },
 	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
 	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
@@ -126,6 +127,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
 	{ MODKEY,                       XK_Right,  view_next_tag,  {0} },
+	{ ALTKEY|ControlMask,           XK_Left,   view_prev_tag,  {0} },
+	{ ALTKEY|ControlMask,           XK_Right,  view_next_tag,  {0} },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)

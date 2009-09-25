@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-08-24 20:05:13.000000000 -0700
-+++ dwm-patched/config.def.h	2009-09-12 16:17:58.000000000 -0700
++++ dwm-patched/config.def.h	2009-09-24 22:32:26.000000000 -0700
 @@ -1,40 +1,53 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -71,7 +71,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -45,14 +58,53 @@ static const Layout layouts[] = {
+@@ -45,14 +58,54 @@ static const Layout layouts[] = {
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
@@ -120,6 +120,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +	{ MODKEY,             		XK_q, 	   spawn,          {.v = snipload } },
 +	{ MODKEY|ALTKEY,    		XK_q, 	   spawn,          {.v = snipsave } },
 +	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
++	{ ALTKEY|ControlMask,  		XK_l, 	   spawn,          {.v = lockcmd } },
 +	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 +	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
 +	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
@@ -131,7 +132,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-@@ -60,9 +112,10 @@ static Key keys[] = {
+@@ -60,9 +113,10 @@ static Key keys[] = {
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -145,12 +146,14 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -71,6 +124,9 @@ static Key keys[] = {
+@@ -71,6 +125,11 @@ static Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 +	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
 +	{ MODKEY,                       XK_Right,  view_next_tag,  {0} },
++	{ ALTKEY|ControlMask,           XK_Left,   view_prev_tag,  {0} },
++	{ ALTKEY|ControlMask,           XK_Right,  view_next_tag,  {0} },
 +
  	TAGKEYS(                        XK_1,                      0)
  	TAGKEYS(                        XK_2,                      1)
