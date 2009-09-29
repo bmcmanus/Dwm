@@ -572,6 +572,7 @@ configurenotify(XEvent *e) {
 			dc.drawable = XCreatePixmap(dpy, root, sw, bh, DefaultDepth(dpy, screen));
 			updatebars();
 			for(m = mons; m; m = m->next)
+				XftDrawChange(dc.xftdrawable, dc.drawable);
 				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
 			arrange(NULL);
 		}
@@ -1768,7 +1769,7 @@ updategeom(void) {
 					m->mx = m->wx = unique[i].x_org;
 					m->my = m->wy = unique[i].y_org;
 					m->mw = m->ww = unique[i].width;
-					m->mh = m->wh = unique[i].height;
+					m->mh = m->wh = unique[i].height - BOTTOM_BAR_HEIGHT;
 					updatebarpos(m);
 				}
 		}

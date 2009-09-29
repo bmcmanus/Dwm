@@ -1,40 +1,53 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]            = "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#cccccc";
-static const char normbgcolor[]     = "#cccccc";
-static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#0066ff";
-static const char selbgcolor[]      = "#0066ff";
-static const char selfgcolor[]      = "#ffffff";
+static const char font[]            = "Inconsolata 10";
+static const char normbordercolor[] = "#0066ff";
+static const char normbgcolor[]     = "#303030";
+static const char normfgcolor[]     = "#909090";
+static const char selbordercolor[]  = "#f11010";
+static const char selbgcolor[]      = "#909090";
+static const char selfgcolor[]      = "#303030";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
+#define BOTTOM_BAR_HEIGHT 0
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
+	{ "Gimp",     NULL,       NULL,        1 << 4,            True,        -1 },
+	{ "Inkscape",     NULL,       NULL,        1 << 4,            False,        -1 },
+	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
+	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
+	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
+	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
+	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
+	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
+	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
+	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
+	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
 };
 
 /* layout(s) */
-static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
-static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
+static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
+static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "*B*",      bstack },         /* first entry is default */
+	{ "*T*",      tile },    	
+	{ "*F*",      NULL },    /* no layout function means floating behavior */
+	{ "*M*",      monocle },
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
+#define ALTKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
