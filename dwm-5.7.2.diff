@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-09-28 22:22:15.000000000 -0700
-+++ dwm-patched/config.def.h	2009-10-15 18:28:54.000000000 -0700
++++ dwm-patched/config.def.h	2009-10-15 18:50:18.000000000 -0700
 @@ -1,40 +1,53 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -87,7 +87,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +static const char *filemgr[]  = { "pcmanfm", NULL };
 +static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
 +static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
-+static const char *lockcmd[]  = { "lockx", NULL };
++static const char *lockcmd[]  = { "lock.sh", NULL };
 +static const char *volume_up[]  = { "amixer", "set", "Master", "2%+", NULL };
 +static const char *volume_down[]  = { "amixer", "set", "Master", "2%-", NULL };
 +static const char *volume_mute[]  = { "amixer", "set", "Master", "toggle", NULL };
