@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
---- dwm-source/config.def.h	2009-09-28 21:58:19.000000000 -0700
-+++ dwm-patched/config.def.h	2009-09-28 21:58:19.000000000 -0700
+--- dwm-source/config.def.h	2009-09-28 22:22:15.000000000 -0700
++++ dwm-patched/config.def.h	2009-10-15 18:28:54.000000000 -0700
 @@ -1,40 +1,53 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -71,7 +71,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -45,14 +58,54 @@ static const Layout layouts[] = {
+@@ -45,24 +58,67 @@ static const Layout layouts[] = {
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
@@ -130,9 +130,11 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = mpd_stop} },
 +	{ MODKEY,                       XK_s,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
++	{ ALTKEY,                       XK_Tab,    focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
++	{ ALTKEY|ShiftMask,             XK_Tab,    focusstack,     {.i = -1 } },
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-@@ -60,9 +113,10 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -146,7 +148,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -71,6 +125,11 @@ static Key keys[] = {
+@@ -71,6 +127,11 @@ static Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -159,8 +161,8 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
 diff -urpN dwm-source/config.mk dwm-patched/config.mk
---- dwm-source/config.mk	2009-09-28 21:58:19.000000000 -0700
-+++ dwm-patched/config.mk	2009-09-28 21:58:19.000000000 -0700
+--- dwm-source/config.mk	2009-09-28 22:22:15.000000000 -0700
++++ dwm-patched/config.mk	2009-09-28 22:22:15.000000000 -0700
 @@ -15,8 +15,8 @@ XINERAMALIBS = -L${X11LIB} -lXinerama
  XINERAMAFLAGS = -DXINERAMA
  
@@ -173,8 +175,8 @@ diff -urpN dwm-source/config.mk dwm-patched/config.mk
  # flags
  CPPFLAGS = -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
 diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
---- dwm-source/dwm.1	2009-09-28 21:58:19.000000000 -0700
-+++ dwm-patched/dwm.1	2009-09-28 21:58:19.000000000 -0700
+--- dwm-source/dwm.1	2009-09-28 22:22:15.000000000 -0700
++++ dwm-patched/dwm.1	2009-09-28 22:22:15.000000000 -0700
 @@ -125,6 +125,14 @@ View all windows with nth tag.
  .B Mod1\-0
  View all windows with any tag.
@@ -191,8 +193,8 @@ diff -urpN dwm-source/dwm.1 dwm-patched/dwm.1
  Add/remove all windows with nth tag to/from the view.
  .TP
 diff -urpN dwm-source/dwm.c dwm-patched/dwm.c
---- dwm-source/dwm.c	2009-09-28 21:58:19.000000000 -0700
-+++ dwm-patched/dwm.c	2009-09-28 21:59:07.000000000 -0700
+--- dwm-source/dwm.c	2009-09-28 22:22:15.000000000 -0700
++++ dwm-patched/dwm.c	2009-09-28 22:22:15.000000000 -0700
 @@ -36,6 +36,10 @@
  #include <X11/Xlib.h>
  #include <X11/Xproto.h>
