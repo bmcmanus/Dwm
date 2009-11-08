@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2009-09-28 22:22:15.000000000 -0700
-+++ dwm-patched/config.def.h	2009-10-15 18:50:18.000000000 -0700
++++ dwm-patched/config.def.h	2009-11-08 15:53:09.000000000 -0800
 @@ -1,40 +1,53 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -84,7 +84,7 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +static const char *irssi[]  = { "urxvtc", "-title", "irssi", "-e", "screen", "-d", "-R", "-t", "irssi", "-S", "irssi", "irssi", NULL };
 +static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
 +static const char *webcmd[]  = { "firefox", NULL };
-+static const char *filemgr[]  = { "pcmanfm", NULL };
++static const char *filemgr[]  = { "urxvtc", "-title", "vifm", "-e", "screen", "-d", "-R", "-t", "vifm", "-S", "vifm", "vifm", NULL };
 +static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
 +static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
 +static const char *lockcmd[]  = { "lock.sh", NULL };
