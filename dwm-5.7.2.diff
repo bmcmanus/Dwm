@@ -1,6 +1,6 @@
 diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 --- dwm-source/config.def.h	2010-01-14 15:51:46.000000000 -0800
-+++ dwm-patched/config.def.h	2010-01-15 11:51:17.000000000 -0800
++++ dwm-patched/config.def.h	2010-02-01 12:00:41.602615162 -0800
 @@ -1,40 +1,54 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -90,9 +90,9 @@ diff -urpN dwm-source/config.def.h dwm-patched/config.def.h
 +static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
 +static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
 +static const char *lockcmd[]  = { "lock.sh", NULL };
-+static const char *volume_up[]  = { "amixer", "set", "Master", "2%+", NULL };
-+static const char *volume_down[]  = { "amixer", "set", "Master", "2%-", NULL };
-+static const char *volume_mute[]  = { "amixer", "set", "Master", "toggle", NULL };
++static const char *volume_up[]  = { "vol-up.sh", NULL};
++static const char *volume_down[]  = { "vol-down.sh", NULL};
++static const char *volume_mute[]  = { "vol-mute.sh", NULL};
 +static const char *mpd_play[]  = { "mpc", "toggle", NULL };
 +static const char *mpd_next[]  = { "mpc", "next", NULL };
 +static const char *mpd_prev[]  = { "mpc", "prev", NULL };
