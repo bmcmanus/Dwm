@@ -23,8 +23,8 @@ static const Rule rules[] = {
 	{ "Inkscape",     NULL,       NULL,        1 << 4,            False,        -1 },
 	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
-	{ "Chromium",  NULL,       NULL,       1 << 1,       False,       -1 },
-	{ "Shiretoko",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Google-chrome",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Namaroka",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
@@ -66,7 +66,7 @@ static const char *irssi[]  = { "urxvtc", "-title", "irssi", "-e", "screen", "-d
 static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
 static const char *webcmd[]  = { "chromium.sh", NULL };
 static const char *webcmd2[]  = { "firefox", NULL };
-static const char *filemgr[]  = { "urxvtc", "-title", "vifm", "-e", "vifm", NULL };
+static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
 static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
 static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
 static const char *lockcmd[]  = { "lock.sh", NULL };
