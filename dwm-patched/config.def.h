@@ -23,13 +23,14 @@ static const Rule rules[] = {
 	{ "Inkscape",     NULL,       NULL,        1 << 4,            False,        -1 },
 	{ "Gnome-mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
 	{ "Mplayer",     NULL,       NULL,        1 << 3,            True,        -1 },
-	{ "Google-chrome",  NULL,       NULL,       1 << 1,       False,       -1 },
-	{ "Namaroka",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Chrome",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Chromium",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Namoroka",  NULL,       NULL,       1 << 1,       False,       -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
-	{ NULL,  NULL,       "mutt",       1 << 2,       False,       -1 },
+	{ NULL,  NULL,       "comms",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
-	{ NULL,  NULL,       "irssi",       1 << 2,       False,       -1 },
 	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
 	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
 };
@@ -40,10 +41,10 @@ static const Bool resizehints = False; /* True means respect size hints in tiled
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
+	{ "*M*",      monocle },
 	{ "*B*",      bstack },         /* first entry is default */
 	{ "*T*",      tile },    	
 	{ "*F*",      NULL },    /* no layout function means floating behavior */
-	{ "*M*",      monocle },
 };
 
 /* key definitions */
@@ -59,40 +60,38 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+static const char *caltodo[]  = { "browser.sh", "calendar.google.com", NULL };
+static const char *chat[]  = { "urxvtc", "-title", "comms", "-e", "tmux", "attach", "-d", "-t", "comms", NULL };
 static const char *dmenucmd[] = { "dmenu-launch.sh", };
-static const char *termcmd[]  = { "urxvtc", NULL };
-static const char *termshcmd[]  = { "urxvtc", "-e", "screen", "-d", "-R", "-t", "urxvt", "-S", "terminal", NULL };
-static const char *irssi[]  = { "urxvtc", "-title", "irssi", "-e", "screen", "-d", "-R", "-t", "irssi", "-S", "irssi", "irssi", NULL };
-static const char *wificmd[]  = {  "urxvtc", "-title", "wifi-select", "-e", "sudo","wifi-select", "wlan0", NULL };
-static const char *webcmd[]  = { "chromium.sh", NULL };
-static const char *webcmd2[]  = { "firefox", NULL };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
-static const char *mailcmd[]  = { "urxvtc", "-title", "mutt", "-e","mutt", NULL };
-static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
+static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 static const char *lockcmd[]  = { "lock.sh", NULL };
-static const char *volume_up[]  = { "vol-up.sh", NULL};
-static const char *volume_down[]  = { "vol-down.sh", NULL};
-static const char *volume_mute[]  = { "vol-mute.sh", NULL};
-static const char *mpd_play[]  = { "mpc", "toggle", NULL };
 static const char *mpd_next[]  = { "mpc", "next", NULL };
+static const char *mpd_play[]  = { "mpc", "toggle", NULL };
 static const char *mpd_prev[]  = { "mpc", "prev", NULL };
 static const char *mpd_stop[]  = { "mpc", "stop", NULL };
-static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
+static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
 static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
-static const char *caltodo[]  = { "chromium.sh", "calendar.google.com", NULL };
+static const char *termcmd[]  = { "urxvtc", NULL };
+static const char *termshcmd[]  = { "urxvtc", "-title", "Terminal", "-e", "tmux", "attach", "-d", "-t", "term", NULL };
+static const char *volume_down[]  = { "vol-down.sh", NULL};
+static const char *volume_mute[]  = { "vol-mute.sh", NULL};
+static const char *volume_up[]  = { "vol-up.sh", NULL};
+static const char *webcmd2[]  = { "firefox", NULL };
+static const char *webcmd[]  = { "browser.sh", NULL };
+static const char *wifi[]  = { "urxvtc", "-e", "sudo", "wifi-select", "wlan0", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
 	{ ALTKEY,                       XK_Return, spawn,          {.v = dmenucmd } },
-	{ MODKEY,             		XK_z, 	   spawn,          {.v = termcmd } },
+	{ MODKEY,             		XK_z, 	   spawn,          {.v = termshcmd } },
 	{ MODKEY,             		XK_x, 	   spawn,          {.v = filemgr } },
-	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termshcmd } },
+	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termcmd } },
 	{ MODKEY,             		XK_w, 	   spawn,          {.v = webcmd } },
 	{ MODKEY|ShiftMask,    		XK_w, 	   spawn,          {.v = webcmd2 } },
-	{ MODKEY,             		XK_r, 	   spawn,          {.v = irssi } },
-	{ MODKEY,             		XK_e, 	   spawn,          {.v = mailcmd } },
+	{ MODKEY,             		XK_e, 	   spawn,          {.v = chat } },
 	{ MODKEY,             		XK_a, 	   spawn,          {.v = notes } },
-	{ MODKEY,             		XK_i, 	   spawn,          {.v = wificmd } },
+	{ MODKEY,             		XK_i, 	   spawn,          {.v = wifi } },
 	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
 	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
 	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
@@ -114,10 +113,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_b,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_b,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
