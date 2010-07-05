@@ -1,13 +1,16 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#cccccc";
-static const char normbgcolor[]     = "#cccccc";
-static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#0066ff";
-static const char selbgcolor[]      = "#0066ff";
-static const char selfgcolor[]      = "#ffffff";
+static const char font[]            = "Inconsolata 10";
+#define NUMCOLORS         4             // need at least 3 (statuscolors patch
+static const char colors[NUMCOLORS][ColLast][8] = {
+	// border   foreground  background
+	{ "#0066ff", "#909090", "#303030" },  // 0 = normal
+	{ "#f11010", "#303030", "#909090" },  // 1 = selected
+	{ "#f11010", "#303030", "#909090" },  // 2 = urgent/warning
+	{ "#ff0000", "#ffffff", "#ff0000" },  // 3 = error
+	// add more here
+};
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
@@ -37,7 +40,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
-
+#include "bstack.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "*M*",      monocle },
@@ -79,7 +82,6 @@ static const char *volume_up[]  = { "vol-up.sh", NULL};
 static const char *webcmd2[]  = { "firefox", NULL };
 static const char *webcmd[]  = { "browser.sh", NULL };
 static const char *wifi[]  = { "urxvtc", "-e", "sudo", "wifi-select", "wlan0", NULL };
-
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
@@ -125,10 +127,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
+/*	{ MODKEY,                       XK_Left,   view_prev_tag,  {0} },
 	{ MODKEY,                       XK_Right,  view_next_tag,  {0} },
 	{ ALTKEY|ControlMask,           XK_Left,   view_prev_tag,  {0} },
-	{ ALTKEY|ControlMask,           XK_Right,  view_next_tag,  {0} },
+	{ ALTKEY|ControlMask,           XK_Right,  view_next_tag,  {0} }, */
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)

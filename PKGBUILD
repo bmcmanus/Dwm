@@ -4,7 +4,7 @@
 # Contributor: Grigorios Bouzakis <grbzks@gmail.com>
 
 pkgname=dwm
-pkgver=5.7.2
+pkgver=5.8.2
 pkgrel=1
 pkgdesc="A dynamic window manager for X"
 url="http://dwm.suckless.org"
@@ -13,15 +13,18 @@ license=('MIT')
 options=(zipman)
 depends=('libx11')
 install=dwm.install
-#source=(http://code.suckless.org/dl/dwm/dwm-$pkgver.tar.gz \
 source=(dwm-$pkgver.tar.gz \
-	dwm-$pkgver.diff)
+	dwm-$pkgver-bstack.diff \
+	dwm-$pkgver-statuscolors.diff \
+	dwm-$pkgver-statuscolors.diff.bak \
+	dwm-$pkgver-pango.diff)
 . md5sums
 build() {
   cd $srcdir/$pkgname-$pkgver
-  patch -p1 < ../dwm-$pkgver.diff
-  cp config.def.h config.h
-
+  cp ../../config.def.h config.h
+  patch -p1 < ../dwm-$pkgver-pango.diff
+  patch -p1 < ../dwm-$pkgver-statuscolors.diff
+  patch -p1 < ../dwm-$pkgver-bstack.diff
   make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11 || return 1
   make PREFIX=/usr DESTDIR=$pkgdir install || return 1
 
