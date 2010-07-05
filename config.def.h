@@ -2,7 +2,7 @@
 
 /* appearance */
 static const char font[]            = "Inconsolata 10";
-#define NUMCOLORS         4             // need at least 3 (statuscolors patch
+#define NUMCOLORS         4             // need at least 3 (statuscolors patch)
 static const char colors[NUMCOLORS][ColLast][8] = {
 	// border   foreground  background
 	{ "#0066ff", "#909090", "#303030" },  // 0 = normal
