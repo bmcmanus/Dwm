@@ -11,7 +11,7 @@ static const char colors[NUMCOLORS][ColLast][8] = {
 	{ "#ff0000", "#ffffff", "#ff0000" },  // 3 = error
 	// add more here
 };
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 6;        /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
