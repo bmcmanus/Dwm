@@ -33,6 +33,7 @@ static const Rule rules[] = {
 	{ "dwb",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "Keepassx",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
+	{ "LibreOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "comms",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
