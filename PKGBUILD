@@ -3,7 +3,7 @@
 # Contributor: Dag Odenhall <dag.odenhall@gmail.com>
 # Contributor: Grigorios Bouzakis <grbzks@gmail.com>
 
-pkgname=dwm
+pkgname=dwm-scotty
 pkgver=5.8.2
 pkgrel=1
 pkgdesc="A dynamic window manager for X"
@@ -11,6 +11,8 @@ url="http://dwm.suckless.org"
 arch=('i686' 'x86_64')
 license=('MIT')
 options=(zipman)
+provides=('dwm')
+conflicts=('dwm')
 depends=('libx11')
 install=dwm.install
 source=(dwm-$pkgver.tar.gz \
@@ -20,7 +22,7 @@ source=(dwm-$pkgver.tar.gz \
 	dwm-$pkgver-uselessgap.diff)
 . md5sums
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd $srcdir/dwm-$pkgver
   cp ../../config.def.h config.h
   patch -p1 < ../dwm-$pkgver-pango.diff
   patch -p1 < ../dwm-$pkgver-statuscolors.diff
