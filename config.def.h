@@ -66,7 +66,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *caltodo[]  = { "browser.sh", "calendar.google.com", NULL };
+static const char *caltodo[]  = { "browser.sh", "https://www.google.com/calendar/render?gsessionid=OK", NULL };
 static const char *chat[]  = { "urxvtc", "-title", "comms", "-e", "tmux", "attach", "-d", "-t", "comms", NULL };
 static const char *dmenucmd[] = { "dmenu-launch.sh", };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
