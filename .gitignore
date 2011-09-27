@@ -1,4 +1,9 @@
+*.[oa]
+*~
 src/
 pkg/
 *.tar.gz
 *.tar.xz
+dwm-*.pkg.tar.gz
+dwm-*.pkg.tar.xz
+md5sums
