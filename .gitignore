@@ -1,6 +1,5 @@
 *.[oa]
 *~
-src/
 pkg/
 dwm-*.pkg.tar.gz
 dwm-*.pkg.tar.xz
