@@ -1,0 +1,8 @@
+== dwm-scotty ==
+* dwm-5.9 with:
+ * Xft/pango patch
+ * Statuscolors patch
+ * Bstack patch
+ * Uselessgaps patch
+
+* Run ./compile.sh to generate md5sums, make and install
