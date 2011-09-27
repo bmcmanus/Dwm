@@ -6,3 +6,4 @@
  * Uselessgaps patch
 
 * Run ./compile.sh to generate md5sums, make and install
+* The 'upstream' branch is the original source from suckless for the current version
