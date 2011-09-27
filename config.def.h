@@ -20,6 +20,7 @@ static const Bool topbar            = True;     /* False means bottom bar */
 /* tagging */
 static const char *tags[] = { "t", "n", "c", "m", "g", "v", "o" };
 
+/* Uses WM_CLASS(STRING) from xprop */
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,        1 << 4,            True,        -1 },
@@ -33,7 +34,7 @@ static const Rule rules[] = {
 	{ "dwb",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "Keepassx",  NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "OpenOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
-	{ "LibreOffice",  NULL,       NULL,       1 << 6,       False,       -1 },
+	{ "libreoffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "comms",       1 << 2,       False,       -1 },
 	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
@@ -68,7 +69,7 @@ static const Layout layouts[] = {
 /* commands */
 static const char *caltodo[]  = { "browser.sh", "https://www.google.com/calendar/render?gsessionid=OK", NULL };
 static const char *chat[]  = { "urxvtc", "-title", "comms", "-e", "tmux", "attach", "-d", "-t", "comms", NULL };
-static const char *dmenucmd[] = { "dmenu-launch.sh", };
+static const char *launchcmd[] = { "gmrun", };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 static const char *lockcmd[]  = { "lock.sh", NULL };
@@ -89,7 +90,7 @@ static const char *wifi[]  = { "urxvtc", "-e", "sudo", "wifi-select", "wlan0", N
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = htop } },
-	{ ALTKEY,                       XK_Return, spawn,          {.v = dmenucmd } },
+	{ ALTKEY,                       XK_Return, spawn,          {.v = launchcmd } },
 	{ MODKEY,             		XK_z, 	   spawn,          {.v = termshcmd } },
 	{ MODKEY,             		XK_x, 	   spawn,          {.v = filemgr } },
 	{ MODKEY|ShiftMask,    		XK_z, 	   spawn,          {.v = termcmd } },
