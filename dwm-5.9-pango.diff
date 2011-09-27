@@ -12,9 +12,9 @@ diff -aur dwm-5.7.2.orig/config.mk dwm-5.7.2.patched/config.mk
  
  # flags
  CPPFLAGS = -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
-diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
---- dwm-5.7.2.orig/dwm.c	2009-09-27 21:20:23.000000000 +0200
-+++ dwm-5.7.2.patched/dwm.c	2009-12-27 16:51:01.258589745 +0100
+diff -aur dwm.c.orig dwm.c
+--- a/dwm.c.orig	2011-07-10 13:24:25.000000000 -0700
++++ b/dwm.c	2011-09-26 20:59:22.849920911 -0700
 @@ -36,6 +36,10 @@
  #include <X11/Xlib.h>
  #include <X11/Xproto.h>
@@ -40,7 +40,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
  #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
  #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-@@ -99,12 +107,19 @@
+@@ -101,12 +109,19 @@
  	unsigned long sel[ColLast];
  	Drawable drawable;
  	GC gc;
@@ -62,7 +62,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  	} font;
  } DC; /* draw context */
  
-@@ -180,7 +195,7 @@
+@@ -183,7 +198,7 @@
  static void focusin(XEvent *e);
  static void focusmon(const Arg *arg);
  static void focusstack(const Arg *arg);
@@ -71,7 +71,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  static Bool getrootptr(int *x, int *y);
  static long getstate(Window w);
  static Bool gettextprop(Window w, Atom atom, char *text, unsigned int size);
-@@ -477,10 +492,6 @@
+@@ -478,10 +493,6 @@
  	for(m = mons; m; m = m->next)
  		while(m->stack)
  			unmanage(m->stack, False);
@@ -82,7 +82,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	XFreePixmap(dpy, dc.drawable);
  	XFreeGC(dpy, dc.gc);
-@@ -550,6 +561,7 @@
+@@ -595,6 +606,7 @@
  			if(dc.drawable != 0)
  				XFreePixmap(dpy, dc.drawable);
  			dc.drawable = XCreatePixmap(dpy, root, sw, bh, DefaultDepth(dpy, screen));
@@ -90,7 +90,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  			updatebars();
  			for(m = mons; m; m = m->next)
  				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
-@@ -767,7 +779,7 @@
+@@ -802,7 +814,7 @@
  		return;
  	olen = strlen(text);
  	h = dc.font.ascent + dc.font.descent;
@@ -99,7 +99,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  	x = dc.x + (h / 2);
  	/* shorten text if necessary */
  	for(len = MIN(olen, sizeof buf); len && textnw(text, len) > dc.w - h; len--);
-@@ -776,11 +788,8 @@
+@@ -811,11 +823,8 @@
  	memcpy(buf, text, len);
  	if(len < olen)
  		for(i = len; i && i > len - 3; buf[--i] = '.');
@@ -113,7 +113,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  }
  
  void
-@@ -880,13 +889,13 @@
+@@ -918,13 +927,13 @@
  }
  
  unsigned long
@@ -131,12 +131,12 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  }
  
  Bool
-@@ -983,37 +992,19 @@
+@@ -1020,36 +1029,19 @@
  
  void
  initfont(const char *fontstr) {
 -	char *def, **missing;
--	int i, n;
+-	int n;
 +	PangoFontMetrics *metrics;
  
 -	missing = NULL;
@@ -147,14 +147,13 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
 -		XFreeStringList(missing);
 -	}
 -	if(dc.font.set) {
--		XFontSetExtents *font_extents;
 -		XFontStruct **xfonts;
 -		char **font_names;
 -
 -		dc.font.ascent = dc.font.descent = 0;
--		font_extents = XExtentsOfFontSet(dc.font.set);
+-		XExtentsOfFontSet(dc.font.set);
 -		n = XFontsOfFontSet(dc.font.set, &xfonts, &font_names);
--		for(i = 0, dc.font.ascent = 0, dc.font.descent = 0; i < n; i++) {
+-		while(n--) {
 -			dc.font.ascent = MAX(dc.font.ascent, (*xfonts)->ascent);
 -			dc.font.descent = MAX(dc.font.descent,(*xfonts)->descent);
 -			xfonts++;
@@ -181,7 +180,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  	dc.font.height = dc.font.ascent + dc.font.descent;
  }
  
-@@ -1497,19 +1488,24 @@
+@@ -1549,19 +1541,24 @@
  	cursor[CurNormal] = XCreateFontCursor(dpy, XC_left_ptr);
  	cursor[CurResize] = XCreateFontCursor(dpy, XC_sizing);
  	cursor[CurMove] = XCreateFontCursor(dpy, XC_fleur);
@@ -215,7 +214,7 @@ diff -aur dwm-5.7.2.orig/dwm.c dwm-5.7.2.patched/dwm.c
  	updatebars();
  	updatestatus();
  	/* EWMH support per view */
-@@ -1579,13 +1575,10 @@
+@@ -1630,13 +1627,10 @@
  
  int
  textnw(const char *text, unsigned int len) {
