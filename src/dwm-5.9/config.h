@@ -69,7 +69,7 @@ static const Layout layouts[] = {
 /* commands */
 static const char *caltodo[]  = { "browser.sh", "https://www.google.com/calendar/render?gsessionid=OK", NULL };
 static const char *chat[]  = { "urxvtc", "-title", "comms", "-e", "tmux", "attach", "-d", "-t", "comms", NULL };
-static const char *launchcmd[] = { "gmrun", };
+static const char *launchcmd[] = { "dmenu-launch.sh", };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 static const char *lockcmd[]  = { "lock.sh", NULL };
