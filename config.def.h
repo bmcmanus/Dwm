@@ -39,7 +39,7 @@ static const Rule rules[] = {
 	{ "libreoffice",  NULL,       NULL,       1 << 6,       False,       -1 },
 	{ NULL,  NULL,       "Terminal",       1 << 0,       False,       -1 },
 	{ NULL,  NULL,       "comms",       1 << 2,       False,       -1 },
-	{ NULL,  NULL,       "ncmpcpp",       1 << 3,       False,       -1 },
+	{ NULL,  NULL,       "music",       1 << 3,       False,       -1 },
 	{ "Wfica_Seamless",  NULL,       NULL,       1 << 2,       True,       -1 },
 	{ "VirtualBox",  NULL,       NULL,       1 << 5,       False,       -1 },
 };
@@ -75,18 +75,18 @@ static const char *launchcmd[] = { "dmenu-launch.sh", };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
 static const char *lockcmd[]  = { "lock.sh", NULL };
-static const char *mpd_next[]  = { "mpc", "next", NULL };
-static const char *mpd_play[]  = { "mpc", "toggle", NULL };
-static const char *mpd_prev[]  = { "mpc", "prev", NULL };
-static const char *mpd_stop[]  = { "mpc", "stop", NULL };
-static const char *musiccmd[]  = { "urxvtc", "-title", "ncmpcpp", "-e","ncmpcpp", NULL };
+static const char *music_next[]  = { "music.sh", "next", NULL };
+static const char *music_play[]  = { "music.sh", "play", NULL };
+static const char *music_prev[]  = { "music.sh", "prev", NULL };
+static const char *music_stop[]  = { "music.sh", "stop", NULL };
+static const char *musiccmd[]  = { "urxvtc", "-title", "music", "-e", "tmux", "attach", "-d", "-t", "music", NULL };
 static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 static const char *termshcmd[]  = { "urxvtc", "-title", "Terminal", "-e", "tmux", "attach", "-d", "-t", "term", NULL };
 static const char *volume_down[]  = { "vol-down.sh", NULL};
 static const char *volume_mute[]  = { "vol-mute.sh", NULL};
 static const char *volume_up[]  = { "vol-up.sh", NULL};
-static const char *webcmd2[]  = { "chromium", NULL };
+static const char *webcmd2[]  = { "firefox", NULL };
 static const char *webcmd[]  = { "browser.sh", NULL };
 static const char *wifi[]  = { "urxvtc", "-e", "sudo", "wifi-select", "wlan0", NULL };
 static Key keys[] = {
@@ -108,10 +108,10 @@ static Key keys[] = {
 	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
 	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
-	{ 0,  		 		 0x1008ff14, 	   spawn,          {.v = mpd_play} },
-	{ 0,  		 		 0x1008ff17, 	   spawn,          {.v = mpd_next} },
-	{ 0,  		 		 0x1008ff16, 	   spawn,          {.v = mpd_prev} },
-	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = mpd_stop} },
+	{ 0,  		 		 0x1008ff14, 	   spawn,          {.v = music_play} },
+	{ 0,  		 		 0x1008ff17, 	   spawn,          {.v = music_next} },
+	{ 0,  		 		 0x1008ff16, 	   spawn,          {.v = music_prev} },
+	{ 0,  		 		 0x1008ff15, 	   spawn,          {.v = music_stop} },
 	{ MODKEY,                       XK_s,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ ALTKEY,                       XK_Tab,    focusstack,     {.i = +1 } },
