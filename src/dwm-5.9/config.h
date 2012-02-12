@@ -69,18 +69,19 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *caltodo[]  = { "browser.sh", "https://www.google.com/calendar/render?gsessionid=OK", NULL };
+static const char *caltodo[]  = { "browser.sh", "https://www.google.com/calendar/b/1/render?gsessionid=hDqD7UUu0lkPyca1m1VJWA", NULL };
 static const char *chat[]  = { "urxvtc", "-title", "comms", "-e", "tmux", "attach", "-d", "-t", "comms", NULL };
 static const char *launchcmd[] = { "dmenu-launch.sh", };
 static const char *filemgr[]  = { "urxvtc", "-title", "Ranger", "-e", "ranger", NULL };
 static const char *htop[]  = { "urxvtc", "-title", "htop", "-e", "htop", NULL };
-static const char *lockcmd[]  = { "lock.sh", NULL };
+static const char *lockcmd[]  = { "sflock", NULL };
 static const char *music_next[]  = { "music.sh", "next", NULL };
 static const char *music_play[]  = { "music.sh", "play", NULL };
 static const char *music_prev[]  = { "music.sh", "prev", NULL };
 static const char *music_stop[]  = { "music.sh", "stop", NULL };
 static const char *musiccmd[]  = { "urxvtc", "-title", "music", "-e", "tmux", "attach", "-d", "-t", "music", NULL };
 static const char *notes[]  = { "urxvtc", "-title", "Notes", "-e", "vim", "/home/firecat53/docs/notes.txt", NULL };
+static const char *sleepcmd[]  = { "lock.sh", NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 static const char *termshcmd[]  = { "urxvtc", "-title", "Terminal", "-e", "tmux", "attach", "-d", "-t", "term", NULL };
 static const char *volume_down[]  = { "vol-down.sh", NULL};
@@ -104,7 +105,7 @@ static Key keys[] = {
 	{ MODKEY,             		XK_g, 	   spawn,          {.v = caltodo } },
 	{ MODKEY,             		XK_n, 	   spawn,          {.v = musiccmd } },
 	{ MODKEY|ALTKEY,      		XK_l, 	   spawn,          {.v = lockcmd } },
-	{ ALTKEY|ControlMask,  		XK_l, 	   spawn,          {.v = lockcmd } },
+	{ ALTKEY|ControlMask,  		XK_l, 	   spawn,          {.v = sleepcmd } },
 	{ 0,  		 		 0x1008ff13, 	   spawn,          {.v = volume_up } },
 	{ 0,  		 		 0x1008ff11, 	   spawn,          {.v = volume_down } },
 	{ 0,  		 		 0x1008ff12, 	   spawn,          {.v = volume_mute } },
